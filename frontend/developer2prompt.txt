@@ -1,0 +1,242 @@
+TASK 1 — Employer Profile Modal
+File: app/components/modals/EmployerProfileModal.tsx
+
+Build a full-screen modal for first-time employer profile completion. This modal appears when the employer has not completed their profile yet.
+
+Theme — your project's app/globals.css already has these variables set up. Use these Tailwind classes that match them:
+- Page overlay: fixed inset-0 bg-black/50 z-50 flex items-center justify-center
+- Modal box: bg-white rounded-2xl shadow-xl p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto
+- Title: text-2xl font-bold text-gray-900 mb-2
+- Subtitle: text-sm text-gray-500 mb-6
+- Labels: text-sm font-medium text-gray-700 mb-1 block
+- All inputs and textarea: w-full border border-gray-200 rounded-lg px-4 py-3 text-base text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+- Submit button: w-full bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-3 rounded-lg text-base min-h-[48px] transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+- Error messages: text-sm text-red-500 mt-1
+
+Fields to build (these match the employer_profiles database table exactly):
+- name — text input, placeholder: "e.g. Sharma Enterprises"
+- location — text input, placeholder: "e.g. delhi" — always convert to lowercase before saving
+- phone_number — text input, max 15 chars, inputMode="numeric"
+- email — email input, placeholder: "hr@company.com"
+- business_description — textarea, 4 rows, placeholder: "Briefly describe your business and what kind of candidates you're looking for"
+
+Behaviour:
+- No close/X button — user must submit before modal dismisses
+- All fields required — show red error below each empty field on submit
+- Use useState for all fields
+- On submit: console.log(formData) for now
+- Subtitle text: "Complete your employer profile to start posting jobs"
+- Submit button label: "Save & Continue"
+
+Use this sample data to pre-fill for testing (import from lib/sampleData.ts):
+
+export const sampleEmployerProfile = {
+  user_id: 2,
+  name: "Sharma Enterprises",
+  location: "delhi",
+  phone_number: "9123456780",
+  email: "hr@sharmaenterprises.com",
+  business_description: "We are a mid-sized retail company looking for motivated individuals for various roles across our stores and offices.",
+};
+
+
+
+
+
+TASK 2 — Employer Dashboard
+File: app/employer/dashboard/page.tsx
+
+Build the main dashboard for a logged-in employer.
+
+Theme — your project's app/globals.css already has these variables. Use these Tailwind classes:
+- Page background is already bg-gray-50 set on body in globals — no need to set again
+- Page layout: max-w-2xl mx-auto px-4 py-8 space-y-6
+- Welcome card: bg-blue-50 border border-blue-100 rounded-2xl p-6
+- Welcome heading: text-2xl font-bold text-gray-900
+- Welcome subtext: text-base text-gray-600
+- Stats card: bg-white rounded-2xl shadow-sm border border-gray-200 p-6
+- Stat number: text-3xl font-bold text-blue-600
+- Stat label: text-sm text-gray-600
+- Primary button (Post Job): bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-3 rounded-lg text-base min-h-[48px] transition-all duration-200 cursor-pointer w-full sm:w-auto
+- Secondary button (Manage Jobs): bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 font-medium px-5 py-3 rounded-lg text-base min-h-[48px] transition-all duration-200 w-full sm:w-auto
+
+Sections to build:
+1. Welcome Banner — "Welcome, {name} 👋" and subtext "Manage your job postings and find the right candidates"
+2. Stats Row — 3 stat cards in grid grid-cols-3 gap-4: Total Jobs Posted, Open Jobs, Closed Jobs — calculate all from sampleJobs
+3. Action Buttons — "➕ Post a Job" links to /employer/post and "📋 Manage Jobs" links to /employer/manage-jobs, layout: flex flex-col sm:flex-row gap-3
+
+Use this sample data (import from lib/sampleData.ts):
+
+export const sampleEmployerProfile = {
+  user_id: 2,
+  name: "Sharma Enterprises",
+  location: "delhi",
+  phone_number: "9123456780",
+  email: "hr@sharmaenterprises.com",
+  business_description: "We are a mid-sized retail company looking for motivated individuals.",
+};
+
+export const sampleJobs = [
+  { id: 1, status: "open" },
+  { id: 2, status: "open" },
+  { id: 3, status: "open" },
+  { id: 4, status: "closed" },
+];
+
+
+
+
+
+
+
+
+
+TASK 3 — Post Job Page
+File: app/employer/post/page.tsx
+
+Build the job posting form page.
+
+Theme — your project's app/globals.css already has these variables. Use these Tailwind classes:
+- Page layout: max-w-xl mx-auto px-4 py-8
+- Page heading: text-2xl font-bold text-gray-900 mb-6
+- Form card wrapper: bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-5
+- Labels: text-sm font-medium text-gray-700 mb-1 block
+- All inputs, textarea, select: w-full border border-gray-200 rounded-lg px-4 py-3 text-base text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+- Submit button: w-full bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-3 rounded-lg text-base min-h-[48px] transition-all duration-200 cursor-pointer mt-2
+- Hint below button: text-sm text-gray-400 text-center mt-3
+- Error messages: text-sm text-red-500 mt-1
+
+Fields to build (match jobs database table exactly):
+- title — text input, placeholder: "e.g. Data Entry Operator"
+- description — textarea 4 rows, placeholder: "Describe the role and responsibilities"
+- salary — text input, placeholder: "e.g. ₹12,000/month"
+- skills_required — textarea 2 rows, placeholder: "e.g. MS Excel, Typing, Communication"
+- qualification_required — <select> dropdown with options:
+    Value 10th_pass → "10th Pass"
+    Value 12th_pass → "12th Pass"
+    Value graduate → "Graduate"
+    Value post_graduate → "Post Graduate"
+- location — text input, placeholder: "e.g. mumbai" — convert to lowercase on every keystroke using onChange
+- vacancies — number input, min 1, placeholder: "e.g. 3"
+
+Behaviour:
+- All fields required — show text-sm text-red-500 mt-1 error on submit if empty
+- Use useState for every field
+- On submit: console.log(formData) for now
+- Hint text below button: "Your job will be listed immediately after posting"
+
+
+
+
+
+
+
+TASK 4 — Manage Jobs Page
+File: app/employer/manage-jobs/page.tsx
+
+Build the page where employers view and manage their posted jobs.
+
+Theme — your project's app/globals.css already has these variables. Use these Tailwind classes:
+- Page layout: max-w-2xl mx-auto px-4 py-8 space-y-4
+- Page header row: flex items-center justify-between mb-6
+- Page title: text-2xl font-bold text-gray-900
+- Job count text: text-sm text-gray-500
+- Post New Job button in header: bg-blue-600 hover:bg-blue-500 text-white font-medium px-4 py-2 rounded-lg text-sm min-h-[40px] transition-all duration-200
+- Job card: bg-white rounded-2xl shadow-sm border border-gray-200 p-5
+- Job title: text-lg font-semibold text-gray-900
+- Location and vacancies text: text-sm text-gray-500
+- Date text: text-xs text-gray-400
+- Open status badge: bg-green-50 text-green-700 text-xs font-medium px-3 py-1 rounded-full
+- Closed status badge: bg-gray-100 text-gray-500 text-xs font-medium px-3 py-1 rounded-full
+- Edit button: bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 font-medium px-3 py-2 rounded-lg text-sm min-h-[36px] transition-all duration-200
+- Close Job button: same classes as Edit button
+- Delete button: bg-red-500 hover:bg-red-600 text-white font-medium px-3 py-2 rounded-lg text-sm min-h-[36px] transition-all duration-200
+
+Each job card must show:
+- title
+- location — prefix with 📍 emoji
+- vacancies — format as "{n} vacancies"
+- status badge — green badge if open, gray badge if closed
+- created_at — format as "Posted on Mar 1, 2024" using:
+  new Date(created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+- Three action buttons in flex gap-2 mt-4:
+    "✏️ Edit" — always shown
+    "🔒 Close Job" — only shown if status === 'open'
+    "🗑️ Delete" — always shown
+- All buttons: console.log(job.id, action) on click for now
+
+Use this sample data (import from lib/sampleData.ts):
+
+export const sampleJobs = [
+  {
+    id: 1,
+    title: "Data Entry Operator",
+    location: "mumbai",
+    vacancies: 3,
+    status: "open",
+    created_at: "2024-03-01T09:00:00Z",
+  },
+  {
+    id: 2,
+    title: "Customer Support Executive",
+    location: "delhi",
+    vacancies: 5,
+    status: "open",
+    created_at: "2024-03-05T11:00:00Z",
+  },
+  {
+    id: 3,
+    title: "Warehouse Helper",
+    location: "pune",
+    vacancies: 10,
+    status: "open",
+    created_at: "2024-03-10T08:30:00Z",
+  },
+  {
+    id: 4,
+    title: "Accounts Assistant",
+    location: "mumbai",
+    vacancies: 2,
+    status: "closed",
+    created_at: "2024-02-20T10:00:00Z",
+  },
+];
+
+
+
+
+TASK 5 — Employer Profile Page
+File: app/employer/profile/page.tsx
+
+Build the read-only employer profile page.
+
+Theme — your project's app/globals.css already has these variables. Use these Tailwind classes:
+- Page layout: max-w-xl mx-auto px-4 py-8 space-y-5
+- All cards: bg-white rounded-2xl shadow-sm border border-gray-200 p-6
+- Business name: text-2xl font-bold text-gray-900
+- Email under name: text-sm text-gray-500
+- Role badge: bg-blue-50 text-blue-700 text-xs font-medium px-3 py-1 rounded-full
+- Detail label: text-xs font-medium text-gray-400 uppercase tracking-wide
+- Detail value: text-base text-gray-800 font-medium
+- Divider between rows: border-t border-gray-100 my-3
+- Business description text: text-base text-gray-700 leading-relaxed
+- Edit button: w-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 font-medium px-5 py-3 rounded-lg text-base min-h-[48px] transition-all duration-200
+
+Sections to build:
+1. Header Card — business name on top, email below it, "Employer" role badge aligned to the right in the same row as the name
+2. Contact Details Card — label-value rows with a divider line between each for: Location, Phone, Email
+3. About the Business Card — heading "About the Business" in label style, then business_description text below it
+4. Edit Profile Button — full width at the bottom, non-functional for now
+
+Use this sample data (import from lib/sampleData.ts):
+
+export const sampleEmployerProfile = {
+  user_id: 2,
+  name: "Sharma Enterprises",
+  location: "delhi",
+  phone_number: "9123456780",
+  email: "hr@sharmaenterprises.com",
+  business_description: "We are a mid-sized retail company looking for motivated individuals for various roles across our stores and offices.",
+};
+
+

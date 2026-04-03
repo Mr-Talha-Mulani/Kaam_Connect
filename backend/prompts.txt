@@ -1,0 +1,515 @@
+prompt 1 :
+I am building a backend for a web application called "KaamConnect".
+
+📌 App Context:
+KaamConnect is a platform that connects blue-collar job seekers with employers. 
+There are two main roles:
+1. job_seeker → people looking for jobs
+2. employer → people posting jobs
+
+The platform is NOT a hiring system, only a connection platform.
+
+Users must register and login, and based on their role they will access different parts of the system.
+
+---
+
+⚙️ Tech Stack:
+- Node.js
+- Express.js
+- PostgreSQL (Neon)
+- JWT Authentication
+- NO ORM (use RAW SQL only)
+
+---
+
+📦 Requirements:
+
+1. Project Structure
+Create a clean scalable backend structure with:
+- controllers
+- routes
+- middleware
+- models (this layer must contain raw SQL queries)
+- config (DB connection)
+- utils (jwt, hashing)
+- services layer
+
+---
+
+2. Database Connection
+- Use `pg` library
+- Create a db connection using `Pool`
+- Connection string will come from `.env` as `DATABASE_URL`
+
+---
+
+3. User Table (IMPORTANT)
+Assume this schema exists:
+
+users:
+- id (PK)
+- name
+- email (unique)
+- password (hashed)
+- role (job_seeker | employer)
+- location
+- is_profile_completed (boolean, default false)
+- created_at
+
+---
+
+4. Authentication Features
+
+✅ Register User
+
+At the time of registration:
+- User MUST provide role:
+  - "job_seeker" OR "employer"
+- Validate role strictly (reject invalid values)
+
+Flow:
+- Hash password using bcrypt
+- Insert user into DB using RAW SQL
+- Set is_profile_completed = false
+- Return JWT token
+
+---
+
+✅ Login User
+- Check email exists
+- Compare password using bcrypt
+- Return JWT token
+
+---
+
+5. JWT Implementation
+
+Create:
+- `generateToken(user)` function
+
+JWT payload should include:
+- user.id
+- user.role
+
+---
+
+6. Middleware
+
+✅ Auth Middleware
+- Extract token from Authorization header
+- Verify JWT
+- Attach decoded user to req.user
+
+---
+
+✅ Role Middleware (RBAC)
+- Function: authorizeRoles(...roles)
+- Allow access only if req.user.role is included
+- Otherwise return 403
+
+---
+
+7. Routes
+
+Create routes:
+
+POST /api/auth/register  
+POST /api/auth/login  
+
+---
+
+8. Architecture Rules (VERY IMPORTANT)
+
+- Controllers should NOT contain SQL
+- Models should contain ALL raw SQL queries
+- Services handle business logic
+- Use async/await
+- Use parameterized queries ($1, $2...) to prevent SQL injection
+
+---
+
+9. Output Format
+
+Generate:
+- Folder structure
+- DB connection file
+- Auth controller
+- Auth service
+- Auth routes
+- Middleware (auth + role)
+- Model with raw SQL queries
+
+---
+
+10. Code Quality
+
+- Clean and modular code
+- Proper error handling
+- Use correct HTTP status codes
+- Scalable structure
+
+---
+
+IMPORTANT:
+- Do NOT use Prisma or any ORM
+- Use ONLY raw SQL queries with pg
+- Role selection during registration is mandatory and must be validated
+
+
+
+
+
+
+prompt 2
+I am building the backend for a web application called "KaamConnect".
+
+This is Prompt 2 (continuation of auth system already implemented).
+
+---
+
+📌 App Context:
+KaamConnect connects blue-collar job seekers with employers.
+
+There are two roles:
+1. job_seeker
+2. employer
+
+After registration and login, users MUST complete their profile before accessing the platform.
+
+We enforce this using:
+- users.is_profile_completed (boolean)
+
+---
+
+⚙️ Tech Stack:
+- Node.js
+- Express.js
+- PostgreSQL (Neon)
+- JWT Authentication
+- NO ORM (RAW SQL only)
+
+---
+
+📦 Database Design (IMPORTANT)
+
+We now have separate profile tables:
+
+1. users
+- id
+- name
+- email
+- password
+- role
+- is_profile_completed
+
+2. job_seeker_profiles
+- id
+- user_id (unique FK)
+- skills
+- age
+- location
+- phone_number
+- qualification (ENUM):
+  - '10th_pass'
+  - '12th_pass'
+  - 'graduate'
+  - 'post_graduate'
+
+3. employer_profiles
+- id
+- user_id (unique FK)
+- name
+- location
+- business_description
+
+---
+
+🎯 Requirements:
+
+1. Profile Completion APIs
+
+Create endpoints:
+
+POST /api/profile/job-seeker  
+POST /api/profile/employer  
+
+---
+
+2. Job Seeker Profile Completion
+
+Flow:
+- Only accessible if user.role = "job_seeker"
+- Insert into job_seeker_profiles table
+- Fields required:
+  - skills
+  - age
+  - location
+  - phone_number
+  - qualification (validate ENUM strictly)
+
+After successful insert:
+- Update users table:
+  SET is_profile_completed = true
+
+---
+
+3. Employer Profile Completion
+
+Flow:
+- Only accessible if user.role = "employer"
+- Insert into employer_profiles table
+- Fields required:
+  - name
+  - location
+  - business_description
+
+After successful insert:
+- Update users table:
+  SET is_profile_completed = true
+
+---
+
+4. Middleware Enforcement
+
+Create a middleware:
+
+✅ checkProfileCompletion
+
+- If user.is_profile_completed = false:
+  → block access to main features
+  → return error: "Complete your profile first"
+
+This middleware will be used in future routes (jobs, applications, etc.)
+
+---
+
+5. RBAC Rules
+
+- job_seeker → can only create job_seeker profile
+- employer → can only create employer profile
+
+Reject mismatched access
+
+---
+
+6. Architecture Rules
+
+- Models contain RAW SQL queries only
+- Controllers handle req/res
+- Services handle logic
+- Use parameterized queries ($1, $2...)
+
+---
+
+7. Output Format
+
+Generate:
+- profile controller
+- profile service
+- profile routes
+- profile models (RAW SQL)
+- middleware for profile completion
+
+---
+
+8. Validation Rules
+
+- Validate phone number format
+- Validate qualification ENUM strictly
+- Prevent duplicate profile creation (user_id unique)
+
+---
+
+IMPORTANT:
+- Do NOT use Prisma or any ORM
+- Use ONLY raw SQL queries with pg
+- Enforce role-based profile creation strictly
+- Ensure is_profile_completed logic is correctly implemented
+
+
+
+
+
+
+prompt 3
+
+I am building the backend for a web application called "KaamConnect".
+
+This is Prompt 3 (final phase of backend).
+
+---
+
+📌 App Context:
+KaamConnect connects job seekers and employers.
+
+There is NO application system.
+Instead:
+- Job seekers directly contact employers via phone/email.
+
+---
+
+⚙️ Tech Stack:
+- Node.js
+- Express.js
+- PostgreSQL (Neon)
+- JWT Authentication
+- NO ORM (RAW SQL ONLY)
+
+---
+
+📦 Database Design
+
+Tables:
+
+users
+job_seeker_profiles
+employer_profiles
+jobs
+
+---
+
+jobs table includes:
+- title
+- description
+- salary
+- skills_required
+- qualification_required (ENUM):
+  - '10th_pass'
+  - '12th_pass'
+  - 'graduate'
+  - 'post_graduate'
+- location
+- vacancies
+- status ('open', 'closed')
+- employer_id
+
+---
+
+🎯 Requirements:
+
+1. Employer Features
+
+✅ Post Job
+POST /api/jobs
+
+- Only accessible by employer
+- Only if is_profile_completed = true
+
+Fields:
+- title
+- description
+- salary
+- skills_required
+- qualification_required
+- location
+- vacancies
+
+IMPORTANT:
+- Convert location to lowercase before storing
+
+---
+
+✅ Get Employer Jobs
+GET /api/jobs/my-jobs
+
+- Return all jobs posted by logged-in employer
+
+---
+
+✅ Update Job
+
+PUT /api/jobs/:id
+
+Employer can:
+- update job details
+- change status (open → closed)
+
+---
+
+✅ Delete Job
+
+DELETE /api/jobs/:id
+
+---
+
+2. Job Seeker Features
+
+✅ Get All Jobs (Filtered)
+
+GET /api/jobs
+
+- Only for job_seeker
+- Only if profile completed
+
+Behavior:
+- Fetch jobs based on job_seeker location
+- Match using case-insensitive search
+
+IMPORTANT:
+- Convert search location to lowercase
+- Use SQL ILIKE or LOWER()
+
+---
+
+3. Job Response Format
+
+When job seeker fetches jobs:
+
+Include:
+- job details
+- employer name
+- employer phone_number
+- employer email
+
+(Hint: use JOIN with employer_profiles)
+
+---
+
+4. Middleware Rules
+
+- verifyToken → required
+- authorizeRoles("employer", "job_seeker")
+- checkProfileCompletion → required
+
+---
+
+5. Architecture Rules
+
+- Models = RAW SQL only
+- Controllers = req/res
+- Services = business logic
+- Use parameterized queries ($1, $2...)
+
+---
+
+6. SQL Requirements
+
+- Normalize location using LOWER()
+- Use JOIN for employer info
+- Prevent unauthorized updates (only job owner can edit/delete)
+
+---
+
+7. Output Format
+
+Generate:
+- job controller
+- job service
+- job routes
+- job model (RAW SQL)
+- queries for:
+  - insert job
+  - get jobs (with employer info)
+  - update job
+  - delete job
+
+---
+
+IMPORTANT:
+- Do NOT use Prisma or ORM
+- Use ONLY raw SQL with pg
+- Enforce RBAC strictly
+- Enforce profile completion before any job access
+- Normalize location (lowercase) before storing and querying
+
+

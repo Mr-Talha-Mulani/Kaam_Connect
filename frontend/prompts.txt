@@ -1,0 +1,216 @@
+Global UI Prompt
+Use Next.js (App Router) with React and Tailwind CSS.
+Design should be clean, modern, and mobile-first.
+Use soft colors, rounded corners, and minimal UI.
+Focus on accessibility and simplicity for non-technical users.
+Avoid clutter. Use large buttons and clear labels.
+
+1. Landing Page (/app/page.js)
+Create a landing page for a platform called "KaamConnect".
+
+Purpose:
+Connect job seekers with employers for blue-collar jobs.
+
+Sections:
+- Hero section with title:
+  "Find Work. Hire Workers. Instantly."
+- Subtitle explaining the platform
+- Two CTA buttons:
+  - "Find a Job"
+  - "Hire Workers"
+- Job categories grid:
+  (Driver, Helper, Delivery, Cleaner, Store Assistant)
+- How it works (3 steps):
+  - Sign up
+  - Complete profile
+  - Connect directly
+- Footer
+
+Design:
+- Clean, modern, mobile-first
+- Use icons for categories
+- Big buttons
+
+2. Login Page (/auth/login)
+Create a login page UI.
+
+Features:
+- Input fields:
+  - Email
+  - Password
+- Login button
+- Link to Register
+
+Extra:
+- Role selection BEFORE login:
+  - "I want a Job"
+  - "I want to Hire"
+
+Design:
+- Centered card
+- Clean form UI
+- Mobile-friendly
+
+3. Register Page (/auth/register)
+Create a registration page.
+
+Fields:
+- Name
+- Email
+- Password
+- Role selection:
+  - Job Seeker
+  - Employer
+
+UI:
+- Toggle buttons for role
+- Simple form layout
+- Submit button
+
+Design:
+- Friendly and minimal
+- Large touch-friendly inputs
+
+4. Job Seeker Profile Modal (IMPORTANT)
+Create a modal for first-time job seeker profile completion.
+
+Fields:
+- Skills (textarea)
+- Age (number)
+- Location
+- Phone Number
+- Qualification (dropdown):
+  - 10th pass
+  - 12th pass
+  - Graduate
+  - Post Graduate
+
+Features:
+- Full-screen modal (mobile-first)
+- Submit button
+
+Design:
+- Simple and easy to fill
+- Large inputs
+- Clear labels
+
+5. Employer Profile Modal
+Create a modal for employer profile completion.
+
+Fields:
+- Name
+- Location
+- Phone Number
+- Email
+- Business Description (textarea)
+
+Design:
+- Clean form
+- Mobile-friendly
+- Clear CTA button
+
+6. Job Seeker Dashboard
+Create a dashboard page for job seekers.
+
+Sections:
+- Welcome message
+- Quick stats:
+  - Jobs available
+- Button: "Browse Jobs"
+
+Design:
+- Simple cards
+- Clean layout
+
+7. Jobs Page (/job-seeker/jobs)
+Create a job listing page.
+
+Features:
+- List of jobs (cards)
+
+Each card shows:
+- Job title
+- Salary
+- Location
+- Skills required
+- Qualification required
+- Employer name
+- Contact buttons:
+  - Call
+  - Email
+
+Filters:
+- Location search
+- Job type
+
+Design:
+- Card-based layout
+- Sticky filter bar
+- Mobile-first
+
+
+8. Job Seeker Profile Page
+Create a profile page.
+
+Sections:
+- User details
+- Skills
+- Qualification
+- Location
+
+Features:
+- Edit button
+
+Design:
+- Card layout
+- Clean and readable
+
+9. Employer Dashboard
+Create an employer dashboard.
+
+Sections:
+- Welcome message
+- Stats:
+  - Total jobs posted
+- Buttons:
+  - Post Job
+  - Manage Jobs
+
+Design:
+- Simple cards
+- Action-focused
+
+10. Post Job Page
+Create a job posting form.
+
+Fields:
+- Job title
+- Description
+- Salary
+- Skills required
+- Qualification required (dropdown)
+- Location
+- Vacancies
+
+Design:
+- Simple form
+- Large inputs
+- Submit button
+
+11. Manage Jobs Page
+Create a page to manage posted jobs.
+
+Features:
+- List of jobs
+
+Each job card:
+- Title
+- Status (open/closed)
+- Buttons:
+  - Edit
+  - Close Job
+  - Delete
+
+Design:
+- Clean card layout
+- Status badge

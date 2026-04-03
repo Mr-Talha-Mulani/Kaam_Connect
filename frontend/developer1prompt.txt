@@ -1,0 +1,237 @@
+TASK 1 — Job Seeker Profile Modal
+File: app/components/modals/JobSeekerProfileModal.tsx
+
+Build a full-screen modal for first-time job seeker profile completion. This modal appears when the user has not completed their profile yet.
+
+Theme — your project's app/globals.css already has these variables set up. Use these Tailwind classes that match them:
+- Page overlay: fixed inset-0 bg-black/50 z-50 flex items-center justify-center
+- Modal box: bg-white rounded-2xl shadow-xl p-6 w-full max-w-lg mx-4
+- Title: text-2xl font-bold text-gray-900
+- Labels: text-sm font-medium text-gray-700 mb-1 block
+- All inputs: w-full border border-gray-200 rounded-lg px-4 py-3 text-base text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+- Submit button: w-full bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-3 rounded-lg text-base min-h-[48px] transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+- Error messages: text-sm text-red-500 mt-1
+- Hint text below button: text-sm text-gray-400 text-center mt-3
+
+Fields to build (these match the job_seeker_profiles database table exactly):
+- skills — textarea, placeholder: "e.g. MS Excel, Data Entry, Typing"
+- age — number input, min 18 max 60
+- location — text input, placeholder: "e.g. mumbai" — always convert to lowercase before saving
+- phone_number — text input, max 15 characters, use inputMode="numeric" for mobile number keyboard
+- qualification — <select> dropdown with these exact options:
+    Value 10th_pass → Label "10th Pass"
+    Value 12th_pass → Label "12th Pass"
+    Value graduate → Label "Graduate"
+    Value post_graduate → Label "Post Graduate"
+
+Behaviour:
+- No close/X button — user must fill and submit before modal dismisses
+- All fields are required — show red error message below each empty field on submit
+- Use useState for all form fields
+- On submit: console.log(formData) for now (API comes later)
+- Below the submit button add this note: "You can update this later from your profile"
+
+Use this sample data to pre-fill the form for testing (import from lib/sampleData.ts):
+
+export const sampleJobSeekerProfile = {
+  user_id: 1,
+  skills: "Data Entry, MS Excel, Typing, Customer Support",
+  age: 24,
+  location: "mumbai",
+  phone_number: "9876543210",
+  qualification: "graduate",
+};
+
+
+
+
+TASK 2 — Job Seeker Dashboard
+File: app/job-seeker/dashboard/page.tsx
+
+Build the main dashboard page for a logged-in job seeker.
+
+Theme — your project's app/globals.css already has these variables. Use these Tailwind classes:
+- Page background is already bg-gray-50 set on body in globals — no need to set it again
+- Page layout wrapper: max-w-2xl mx-auto px-4 py-8 space-y-6
+- Welcome card background: bg-blue-50 border border-blue-100 rounded-2xl p-6
+- Welcome heading: text-2xl font-bold text-gray-900
+- Welcome subtext: text-base text-gray-600
+- Stat card: bg-white rounded-2xl shadow-sm border border-gray-200 p-6
+- Stat number: text-3xl font-bold text-blue-600
+- Stat label: text-sm text-gray-600
+- Browse Jobs button: w-full bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-3 rounded-lg text-base min-h-[48px] transition-all duration-200 cursor-pointer
+
+Sections to build:
+1. Welcome Banner Card — show "Welcome back, {name} 👋" and subtext "Here's what's happening today"
+2. Stats Card — show one stat: "Jobs Available" with the count of open jobs
+3. Browse Jobs Button — full width, links to /job-seeker/jobs
+
+Use this sample data (import from lib/sampleData.ts):
+
+export const sampleUser = {
+  id: 1,
+  name: "Ravi Kumar",
+  email: "ravi@example.com",
+  role: "job_seeker",
+};
+
+export const sampleJobs = [
+  { id: 1, status: "open" },
+  { id: 2, status: "open" },
+  { id: 3, status: "open" },
+  { id: 4, status: "closed" },
+];
+
+Jobs available count = sampleJobs.filter(j => j.status === 'open').length
+
+
+
+
+
+TASK 3 — Jobs Listing Page
+File: app/job-seeker/jobs/page.tsx
+
+Build the job browsing page. Show all open jobs as cards with filters.
+
+Theme — your project's app/globals.css already has these variables. Use these Tailwind classes:
+- Sticky filter bar: sticky top-0 z-10 bg-gray-50 border-b border-gray-200 py-3 px-4
+- Filter inputs: border border-gray-200 rounded-lg px-4 py-2 text-base text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition
+- Page layout: max-w-2xl mx-auto px-4 py-6 space-y-4
+- Job card: bg-white rounded-2xl shadow-sm border border-gray-200 p-5 space-y-3
+- Job title: text-lg font-semibold text-gray-900
+- Salary: text-base text-green-600 font-medium
+- Location and employer text: text-sm text-gray-600
+- Skills text: text-sm text-gray-700
+- Qualification badge: bg-blue-50 text-blue-700 text-xs font-medium px-2 py-1 rounded-full
+- Call button: bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 font-medium px-4 py-2 rounded-lg text-sm min-h-[44px] transition-all duration-200
+- Email button: same classes as call button
+
+Filters to build (use useState, filter the sampleJobs array live):
+- Location text input — filter where job.location.includes(value.toLowerCase())
+- Qualification dropdown — filter by qualification_required, options: All / 10th Pass / 12th Pass / Graduate / Post Graduate
+
+Each job card must show:
+- title
+- salary
+- location — prefix with the 📍 emoji, already stored lowercase
+- skills_required — with label "Skills:"
+- qualification_required — map to readable label:
+    10th_pass → "10th Pass"
+    12th_pass → "12th Pass"
+    graduate → "Graduate"
+    post_graduate → "Post Graduate"
+    Show as a badge
+- employer_name — prefix with 🏢 emoji
+- Two buttons: "📞 Call" and "✉️ Email" side by side using flex gap-3
+- Only show cards where status === 'open'
+
+Use this sample data (import from lib/sampleData.ts):
+
+export const sampleJobs = [
+  {
+    id: 1,
+    title: "Data Entry Operator",
+    salary: "₹12,000/month",
+    skills_required: "MS Excel, Typing, Attention to Detail",
+    qualification_required: "12th_pass",
+    location: "mumbai",
+    vacancies: 3,
+    status: "open",
+    employer_name: "Sharma Enterprises",
+    employer_phone: "9123456780",
+    employer_email: "hr@sharmaenterprises.com",
+  },
+  {
+    id: 2,
+    title: "Customer Support Executive",
+    salary: "₹15,000/month",
+    skills_required: "Communication, Hindi & English, Patience",
+    qualification_required: "graduate",
+    location: "delhi",
+    vacancies: 5,
+    status: "open",
+    employer_name: "Sharma Enterprises",
+    employer_phone: "9123456780",
+    employer_email: "hr@sharmaenterprises.com",
+  },
+  {
+    id: 3,
+    title: "Warehouse Helper",
+    salary: "₹10,000/month",
+    skills_required: "Physical Fitness, Basic Counting",
+    qualification_required: "10th_pass",
+    location: "pune",
+    vacancies: 10,
+    status: "open",
+    employer_name: "Sharma Enterprises",
+    employer_phone: "9123456780",
+    employer_email: "hr@sharmaenterprises.com",
+  },
+  {
+    id: 4,
+    title: "Accounts Assistant",
+    salary: "₹18,000/month",
+    skills_required: "Tally, MS Excel, Basic Accounting",
+    qualification_required: "post_graduate",
+    location: "mumbai",
+    vacancies: 2,
+    status: "closed",
+    employer_name: "Sharma Enterprises",
+    employer_phone: "9123456780",
+    employer_email: "hr@sharmaenterprises.com",
+  },
+];
+
+
+
+TASK 4 — Job Seeker Profile Page
+File: app/job-seeker/profile/page.tsx
+
+Build the read-only profile view for a job seeker.
+
+Theme — your project's app/globals.css already has these variables. Use these Tailwind classes:
+- Page layout: max-w-xl mx-auto px-4 py-8 space-y-5
+- All cards: bg-white rounded-2xl shadow-sm border border-gray-200 p-6
+- Name heading: text-2xl font-bold text-gray-900
+- Email subtext: text-sm text-gray-500
+- Role badge: bg-blue-50 text-blue-700 text-xs font-medium px-3 py-1 rounded-full
+- Detail label: text-xs font-medium text-gray-400 uppercase tracking-wide
+- Detail value: text-base text-gray-800 font-medium
+- Skills pill badge: bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full
+- Edit button: bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 font-medium px-5 py-3 rounded-lg text-base min-h-[48px] transition-all duration-200 w-full
+
+Sections to build:
+1. Header Card — show name, email, and "Job Seeker" role badge all in one row
+2. Details Card — show Age, Location, Phone, Qualification as label-value rows with a divider line between each row
+3. Skills Card — heading "Skills", split the skills string by comma, render each skill as a pill badge inside flex flex-wrap gap-2
+4. Edit Profile Button — full width secondary button at the bottom, non-functional for now
+
+Qualification display mapping:
+- 10th_pass → "10th Pass"
+- 12th_pass → "12th Pass"
+- graduate → "Graduate"
+- post_graduate → "Post Graduate"
+
+Use this sample data (import from lib/sampleData.ts):
+
+export const sampleUser = {
+  id: 1,
+  name: "Ravi Kumar",
+  email: "ravi@example.com",
+  role: "job_seeker",
+};
+
+export const sampleJobSeekerProfile = {
+  user_id: 1,
+  skills: "Data Entry, MS Excel, Typing, Customer Support",
+  age: 24,
+  location: "mumbai",
+  phone_number: "9876543210",
+  qualification: "graduate",
+};
+
+
+
+
+
+
