@@ -1,17 +1,67 @@
-import { HTMLAttributes } from "react";
+import * as React from "react";
+import { cn } from "./utils";
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  hover?: boolean;
-}
-
-export default function Card({ hover = false, className = "", ...props }: CardProps) {
-  const baseClasses = "bg-white rounded-2xl shadow-sm border border-neutral-100 p-6";
-  const hoverClasses = hover ? "hover:shadow-md transition-shadow duration-200" : "";
-
+function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={`${baseClasses} ${hoverClasses} ${className}`}
+      data-slot="card"
+      className={cn(
+        "bg-[var(--card)] text-[var(--card-foreground)] flex flex-col gap-6 rounded-xl border border-[var(--border)] shadow-sm",
+        className
+      )}
       {...props}
     />
   );
 }
+
+function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-header"
+      className={cn("grid auto-rows-min gap-1.5 px-6 pt-6", className)}
+      {...props}
+    />
+  );
+}
+
+function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <h4
+      data-slot="card-title"
+      className={cn("leading-none font-semibold text-[var(--foreground)]", className)}
+      {...props}
+    />
+  );
+}
+
+function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <p
+      data-slot="card-description"
+      className={cn("text-sm text-[var(--muted-foreground)]", className)}
+      {...props}
+    />
+  );
+}
+
+function CardContent({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-content"
+      className={cn("px-6 [&:last-child]:pb-6", className)}
+      {...props}
+    />
+  );
+}
+
+function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-footer"
+      className={cn("flex items-center px-6 pb-6", className)}
+      {...props}
+    />
+  );
+}
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };

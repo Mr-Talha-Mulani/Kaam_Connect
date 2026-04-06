@@ -1,34 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Nunito:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  --color-primary: #2563eb; /* blue-600 */
-  --color-primary-hover: #3b82f6; /* blue-500 */
-  --color-primary-light: #eff6ff; /* blue-50 */
-  --color-secondary: #16a34a; /* green-600 */
-  --color-neutral-50: #f9fafb; /* gray-50 */
-  --color-neutral-100: #f3f4f6; /* gray-100 */
-  --color-neutral-200: #e5e7eb; /* gray-200 */
-  --color-neutral-400: #9ca3af; /* gray-400 */
-  --color-neutral-600: #4b5563; /* gray-600 */
-  --color-neutral-800: #1f2937; /* gray-800 */
-  --color-neutral-900: #111827; /* gray-900 */
-  --color-background: #ffffff;
-  --color-text-heading: #111827; /* gray-900 */
-  --color-text-body: #4b5563; /* gray-600 */
-  --color-text-muted: #9ca3af; /* gray-400 */
-  --color-border: #e5e7eb; /* gray-200 */
-  --color-error: #ef4444; /* red-500 */
-}
+  /* KaamConnect Custom Theme - Blue & Teal Shades */
+  --font-family-primary: 'Sora', 'Poppins', sans-serif;
+  --font-family-secondary: 'Inter', 'Nunito', sans-serif;
 
-* {
-  box-sizing: border-box;
-}
+  /* Colors - Blue/Teal Gradient Palette */
+  --kaam-primary-dark: #1E3A8A;
+  --kaam-primary: #3B5BDB;
+  --kaam-teal: #2EC4B6;
+  --kaam-light-blue: #EAF1FF;
+  --kaam-soft-teal: #E6F8F6;
+  --kaam-background: #F7FAFF;
+  --kaam-card: #FFFFFF;
+  --kaam-text-primary: #1F2937;
+  --kaam-text-secondary: #6B7280;
+  --kaam-border: #E5E7EB;
+  --kaam-success: #22C55E;
+  --kaam-warning: #F59E0B;
+  --kaam-error: #EF4444;
 
-body {
-  @apply bg-gray-50 text-gray-900 font-sans antialiased;
+  --font-size: 16px;
+  --background: var(--kaam-background);
+  --foreground: var(--kaam-text-primary);
+  --card: var(--kaam-card);
+  --card-foreground: var(--kaam-text-primary);
+  --popover: #ffffff;
+  --popover-foreground: var(--kaam-text-primary);
+  --primary: var(--kaam-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--kaam-teal);
+  --secondary-foreground: #ffffff;
+  --muted: #ececf0;
+  --muted-foreground: var(--kaam-text-secondary);
+  --accent: var(--kaam-teal);
+  --accent-foreground: #ffffff;
+  --destructive: var(--kaam-error);
+  --destructive-foreground: #ffffff;
+  --border: var(--kaam-border);
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: var(--kaam-primary);
+  --radius: 0.75rem;
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-family-secondary);
+  --font-mono: 'Geist Mono', monospace;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-family-secondary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-primary);
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  button {
+    font-family: var(--font-family-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: 1rem;
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
 }
