@@ -1,58 +1,54 @@
-const ProfileModel = require('../models/profileModel');
+const { JobSeekerProfileModel, EmployerProfileModel } = require('../models/profileModel');
 const UserModel = require('../models/userModel');
+const ApiError = require('../utils/ApiError');
 
 class ProfileService {
-  static async createJobSeekerProfile(userId, profileData) {
-    const { skills, age, location, phone_number, qualification } = profileData;
-
-    // Validate qualification enum
-    const validQualifications = ['10th_pass', '12th_pass', 'graduate', 'post_graduate'];
-    if (!validQualifications.includes(qualification)) {
-      throw new Error('Invalid qualification. Must be one of: 10th_pass, 12th_pass, graduate, post_graduate');
-    }
-
-    // Validate phone number format (basic validation)
-    const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/;
-    if (!phoneRegex.test(phone_number)) {
-      throw new Error('Invalid phone number format');
-    }
-
-    // Check if profile already exists
-    const existingProfile = await ProfileModel.findJobSeekerProfileByUserId(userId);
-    if (existingProfile) {
-      throw new Error('Profile already exists for this user');
-    }
-
-    // Create profile
-    const profile = await ProfileModel.createJobSeekerProfile(userId, skills, age, location, phone_number, qualification);
-
-    // Update user profile completed status
-    await UserModel.updateProfileCompleted(userId);
-
+  static async getJobSeekerProfile(userId) {
+    const profile = await JobSeekerProfileModel.findByUserId(userId);
+    if (!profile) throw new ApiError(404, 'Profile not found');
     return profile;
   }
 
-  static async createEmployerProfile(userId, profileData) {
-    const { name, location, business_description, phone_number } = profileData;
-
-    // Validate phone number format (basic validation)
-    const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/;
-    if (!phoneRegex.test(phone_number)) {
-      throw new Error('Invalid phone number format');
+  static async createOrUpdateJobSeekerProfile(userId, data) {
+    const existing = await JobSeekerProfileModel.findByUserId(userId);
+    let profile;
+    if (existing) {
+      profile = await JobSeekerProfileModel.update(userId, data);
+    } else {
+      if (!data.phone_number) throw new ApiError(400, 'Phone number is required');
+      if (!data.primary_skill) throw new ApiError(400, 'Primary skill is required');
+      profile = await JobSeekerProfileModel.create(userId, data);
+      await UserModel.updateProfileCompleted(userId);
     }
+    return profile;
+  }
 
-    // Check if profile already exists
-    const existingProfile = await ProfileModel.findEmployerProfileByUserId(userId);
-    if (existingProfile) {
-      throw new Error('Profile already exists for this user');
+  static async getEmployerProfile(userId) {
+    const profile = await EmployerProfileModel.findByUserId(userId);
+    if (!profile) throw new ApiError(404, 'Profile not found');
+    return profile;
+  }
+
+  static async createOrUpdateEmployerProfile(userId, data) {
+    const existing = await EmployerProfileModel.findByUserId(userId);
+    let profile;
+    if (existing) {
+      profile = await EmployerProfileModel.update(userId, data);
+    } else {
+      // First-time profile creation may come from a short dashboard form.
+      // Fill required columns with safe defaults so creation does not fail.
+      const createPayload = {
+        owner_name: data.owner_name || data.name || 'Business Owner',
+        owner_phone: data.owner_phone || data.business_phone || '0000000000',
+        name: data.name || 'My Business',
+        business_address: data.business_address || data.location || 'Address not provided',
+        phone_number: data.business_phone || data.owner_phone || '0000000000',
+        location: data.location || data.city || 'Unknown',
+        ...data,
+      };
+      profile = await EmployerProfileModel.upsert(userId, createPayload);
+      await UserModel.updateProfileCompleted(userId);
     }
-
-    // Create profile
-    const profile = await ProfileModel.createEmployerProfile(userId, name, location, business_description, phone_number);
-
-    // Update user profile completed status
-    await UserModel.updateProfileCompleted(userId);
-
     return profile;
   }
 }

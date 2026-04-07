@@ -1,0 +1,3 @@
+.next/dev/types/validator.ts(69,39): error TS2306: File 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/employer/manage-jobs/page.tsx' is not a module.
+.next/dev/types/validator.ts(87,39): error TS2306: File 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/employer/profile/page.tsx' is not a module.
+.next/dev/types/validator.ts(123,39): error TS2306: File 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/job-seeker/profile/page.tsx' is not a module.

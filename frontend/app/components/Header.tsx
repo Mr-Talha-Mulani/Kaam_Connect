@@ -60,7 +60,6 @@ export function Header({ currentLanguage = "en", onLanguageChange }: HeaderProps
             { href: "/", label: "Home" },
             { href: "/job-seeker/jobs", label: "Find Jobs" },
             { href: "/how-it-works", label: "How It Works" },
-            { href: "/employer/dashboard", label: "For Employers" },
           ].map(({ href, label }) => (
             <Link
               key={href}
@@ -143,7 +142,6 @@ export function Header({ currentLanguage = "en", onLanguageChange }: HeaderProps
                   { href: "/", label: "Home" },
                   { href: "/job-seeker/jobs", label: "Find Jobs" },
                   { href: "/how-it-works", label: "How It Works" },
-                  { href: "/employer/dashboard", label: "For Employers" },
                   { href: "/job-seeker/dashboard", label: "Worker Dashboard" },
                 ].map(({ href, label }) => (
                   <Link

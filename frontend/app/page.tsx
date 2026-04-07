@@ -158,6 +158,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Final CTA (Ready to Get Started) */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-[#3B5BDB] to-[#2EC4B6]">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+            Ready to Get Started?
+          </h2>
+          <p className="text-lg mb-10 text-white/90 max-w-2xl mx-auto">
+            Join thousands of workers and employers already using KaamConnect
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild className="bg-white text-[#3B5BDB] hover:bg-white/90 h-12 px-8 text-lg border-0">
+              <Link href="/auth/register">
+                Join as Worker
+              </Link>
+            </Button>
+            <Button asChild className="bg-[#1E3A8A] hover:bg-[#1E3A8A]/90 h-12 px-8 text-lg border-0 text-white">
+              <Link href="/employer/dashboard">
+                Hire Workers
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Job Categories Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
@@ -182,38 +206,6 @@ export default function Home() {
                   </CardContent>
                 </Card>
               </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section id="how-it-works" className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#1F2937]">
-            How KaamConnect Works
-          </h2>
-          <p className="text-center text-[#6B7280] mb-12 max-w-2xl mx-auto">
-            Getting started is simple. Follow these three easy steps to find work or hire workers.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {howItWorks.map((item) => (
-              <Card
-                key={item.step}
-                className="relative border-[#E5E7EB]"
-                style={{ backgroundColor: item.bg }}
-              >
-                <CardContent className="p-8 text-center pt-8">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#3B5BDB] to-[#2EC4B6] mx-auto mb-6 flex items-center justify-center">
-                    <item.icon className="h-10 w-10 text-white" />
-                  </div>
-                  <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-gradient-to-r from-[#3B5BDB] to-[#2EC4B6] flex items-center justify-center text-white font-bold">
-                    {item.step}
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-[#1F2937]">{item.title}</h3>
-                  <p className="text-[#6B7280]">{item.description}</p>
-                </CardContent>
-              </Card>
             ))}
           </div>
         </div>
@@ -268,30 +260,6 @@ export default function Home() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-[#3B5BDB] to-[#2EC4B6]">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-            Ready to Get Started?
-          </h2>
-          <p className="text-lg mb-10 text-white/90 max-w-2xl mx-auto">
-            Join thousands of workers and employers already using KaamConnect
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-white text-[#3B5BDB] hover:bg-white/90 h-12 px-8 text-lg border-0">
-              <Link href="/auth/register">
-                Join as Worker
-              </Link>
-            </Button>
-            <Button asChild className="bg-[#1E3A8A] hover:bg-[#1E3A8A]/90 h-12 px-8 text-lg border-0 text-white">
-              <Link href="/employer/dashboard">
-                Hire Workers
-              </Link>
-            </Button>
           </div>
         </div>
       </section>

@@ -1,13 +1,13 @@
 const pool = require('../config/db');
 
 class UserModel {
-  static async createUser(name, email, password, role, location) {
+  static async createUser(name, email, password, role, location, phone = null) {
     const query = `
-      INSERT INTO users (name, email, password, role, location, is_profile_completed, created_at)
-      VALUES ($1, $2, $3, $4, $5, false, NOW())
-      RETURNING id, name, email, role, location, is_profile_completed;
+      INSERT INTO users (name, email, password, role, location, phone, is_profile_completed, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, false, NOW())
+      RETURNING id, name, email, role, location, phone, is_profile_completed;
     `;
-    const values = [name, email, password, role, location];
+    const values = [name, email, password, role, location, phone];
     const result = await pool.query(query, values);
     return result.rows[0];
   }
@@ -25,7 +25,7 @@ class UserModel {
   }
 
   static async updateProfileCompleted(userId) {
-    const query = 'UPDATE users SET is_profile_completed = true WHERE id = $1';
+    const query = 'UPDATE users SET is_profile_completed = true, updated_at = NOW() WHERE id = $1';
     await pool.query(query, [userId]);
   }
 }

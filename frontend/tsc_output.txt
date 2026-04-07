@@ -1,0 +1,11 @@
+app/components/Header.tsx(6,24): error TS1261: Already included file name 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/components/ui/button.tsx' differs from file name 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/components/ui/Button.tsx' only in casing.
+  The file is in the program because:
+    Imported via "./ui/button" from file 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/components/Header.tsx'
+    Imported via "./components/ui/button" from file 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/page.tsx'
+    Matched by include pattern '**/*.tsx' in 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/tsconfig.json'
+    Imported via "../components/ui/button" from file 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/how-it-works/page.tsx'
+app/page.tsx(21,35): error TS1261: Already included file name 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/components/ui/card.tsx' differs from file name 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/components/ui/Card.tsx' only in casing.
+  The file is in the program because:
+    Imported via "./components/ui/card" from file 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/page.tsx'
+    Matched by include pattern '**/*.tsx' in 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/tsconfig.json'
+    Imported via "../components/ui/card" from file 'D:/Desktop/Code/Web Dev Progress/KaamConnect/Kaam_Connect/frontend/app/how-it-works/page.tsx'
